@@ -86,7 +86,7 @@ class PayStackPayoutService implements PayoutServiceInterface
         $response = $this->httpClient->post('transfer', $request);
         $response->throw();
 
-        $this->createPayoutRecord($response, $bankAccount, $payoutReference);
+        return $this->createPayoutRecord($response, $bankAccount, $payoutReference);
     }
 
     protected function createPayoutRecord(Response $response, BankAccount $bankAccount, string $payoutReference): PayoutRecord
