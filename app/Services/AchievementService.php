@@ -34,7 +34,7 @@ class AchievementService implements AchievementServiceInterface
         return new UserAchievement($user, $nextAchievements, $nextBadge, $remainingToNextBadge);
     }
 
-    public function validateAchievementReached(AchievementType $type, int $count): Achievement
+    public function validateAchievementReached(AchievementType $type, int $count): Achievement|null
     {
         return Achievement::where('type', $type)->where('unlocked_at', $count)->first();
     }
@@ -65,10 +65,16 @@ class AchievementService implements AchievementServiceInterface
     protected function achievementsUntilNextBadge(User $user, Badge $nextBadge): Collection
     {
         $nextBadgeAchievement = $nextBadge->achievement;
-        $latestAchievement = $user->latestAchievements()->first() ?: $this->firstAchievementOfType($nextBadgeAchievement->type);
-        return Achievement::whereBetween('unlocked_at', [$latestAchievement->unlocked_at, $nextBadgeAchievement->unlocked_at])
+        $latestAchievement = $this->lastAchievementOfType($user, $nextBadgeAchievement) ?: $this->firstAchievementOfType($nextBadgeAchievement->type);
+        return Achievement::where('unlocked_at', '>', $latestAchievement->unlocked_at)
+            ->where('unlocked_at', '<=', $nextBadgeAchievement->unlocked_at)
             ->where('type', $nextBadgeAchievement->type)
             ->get();
+    }
+
+    protected function lastAchievementOfType(User $user, Achievement $achievement): Achievement|null
+    {
+        return $user->achievements()->where('type', $achievement->type)->orderBy('unlocked_at', 'desc')->first();
     }
 
     protected function firstAchievementOfType(AchievementType $achievementType): Achievement

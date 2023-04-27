@@ -20,7 +20,7 @@ class BadgeService
             ->select('badges.*')->first();
     }
 
-    public function validateBadgeReached(Achievement $achievement): Badge
+    public function validateBadgeReached(Achievement $achievement): Badge|null
     {
         return Badge::where('unlocked_by_achievement_id', $achievement->id)->first();
     }

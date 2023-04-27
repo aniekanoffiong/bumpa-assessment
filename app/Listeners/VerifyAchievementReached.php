@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Contracts\Services\PayoutServiceInterface;
 use App\Enums\AchievementType;
 use App\Events\AchievementUnlocked;
 use App\Events\BadgeUnlocked;
@@ -17,13 +18,19 @@ class VerifyAchievementReached
 
     protected AchievementService $achievementService;
     protected BadgeService $badgeService;
+    protected PayoutServiceInterface $payoutService;
     /**
      * Create the event listener.
      */
-    public function __construct(AchievementService $achievementService, BadgeService $badgeService)
+    public function __construct(
+        AchievementService $achievementService,
+        BadgeService $badgeService,
+        PayoutServiceInterface $payoutService
+    )
     {
         $this->achievementService = $achievementService;
         $this->badgeService = $badgeService;
+        $this->payoutService = $payoutService;
     }
 
     /**
@@ -44,6 +51,7 @@ class VerifyAchievementReached
             if ($badge) {
                 $paymentUser->badges()->attach($badge->id);
                 BadgeUnlocked::dispatch($badge->name, $paymentUser);
+                $this->payoutService->makePayoutForBadgeReached($paymentUser);
             }
         }
     }
