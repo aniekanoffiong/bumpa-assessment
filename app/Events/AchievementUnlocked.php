@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Payment;
+use App\Models\Achievement;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,14 +11,17 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PaymentSuccessful
+class AchievementUnlocked
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public Payment $payment) {}
+    public function __construct(public string $achievementName, public User $user)
+    {
+        //
+    }
 
     /**
      * Get the channels the event should broadcast on.

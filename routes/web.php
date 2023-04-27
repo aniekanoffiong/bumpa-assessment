@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AchievementController;
 use Illuminate\Support\Facades\Route;
 
 /*

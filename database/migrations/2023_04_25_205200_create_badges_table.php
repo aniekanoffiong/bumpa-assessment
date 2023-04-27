@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('badges', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('unlocked_by_achievement_id')->constrained(table: 'achievements');
             $table->string('name');
             $table->timestamps();
         });

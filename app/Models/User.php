@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
@@ -50,6 +51,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Achievement::class, 'achievement_user')->withTimestamps();
     }
 
+    public function latestAchievements(): BelongsToMany
+    {
+        return $this->achievements()->orderByPivot('created_at', 'desc');
+    }
+
     public function badges(): BelongsToMany
     {
         return $this->belongsToMany(Badge::class, 'badge_user')->withTimestamps();
@@ -58,5 +64,15 @@ class User extends Authenticatable
     public function account(): HasOne
     {
         return $this->hasOne(BankAccount::class);
+    }
+
+    public function lastestBadges(): BelongsToMany
+    {
+        return $this->badges()->orderByPivot('created_at', 'desc');
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 }

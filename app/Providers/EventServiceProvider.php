@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\AchievementUnlocked;
+use App\Events\BadgeUnlocked;
 use App\Events\PaymentSuccessful;
 use App\Listeners\VerifyAchievementReached;
 use Illuminate\Auth\Events\Registered;
@@ -23,6 +25,14 @@ class EventServiceProvider extends ServiceProvider
 
         PaymentSuccessful::class => [
             VerifyAchievementReached::class
+        ],
+
+        AchievementUnlocked::class => [
+
+        ],
+
+        BadgeUnlocked::class => [
+
         ],
 
     ];
