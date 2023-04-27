@@ -4,7 +4,7 @@ namespace App\Contracts\Services;
 
 use App\Models\User;
 
-interface AchievementServiceInterface{
+interface AchievementServiceInterface {
     
     public function userAchievements(User $user);
 

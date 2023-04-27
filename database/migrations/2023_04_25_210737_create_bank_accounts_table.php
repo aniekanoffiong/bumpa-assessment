@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('bank_id')->constrained();
+            $table->string('bank_code');
             $table->string('account_number');
+            $table->string('paystack_transfer_user_id')->nullable();
             $table->timestamps();
         });
     }

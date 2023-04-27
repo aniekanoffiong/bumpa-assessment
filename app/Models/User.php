@@ -61,7 +61,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Badge::class, 'badge_user')->withTimestamps();
     }
 
-    public function account(): HasOne
+    public function bankAccount(): HasOne
     {
         return $this->hasOne(BankAccount::class);
     }

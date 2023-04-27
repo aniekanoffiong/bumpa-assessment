@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentStatus;
 use App\Events\PaymentSuccessful;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,11 @@ class Payment extends Model
         'user_id',
         'title',
         'amount',
+        'status',
+    ];
+
+    protected $casts = [
+        'status' => PaymentStatus::class
     ];
 
     protected $dispatchesEvents = [
